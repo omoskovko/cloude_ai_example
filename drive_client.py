@@ -63,9 +63,9 @@ class DriveClient:
         self._service = build("drive", "v3", credentials=creds)
         return self._service
 
-    # ──────────────────────────────
+    # ------------------------------
     # SEARCH
-    # ──────────────────────────────
+    # ------------------------------
 
     def search_files(
         self,
@@ -170,9 +170,9 @@ class DriveClient:
         except Exception as e:
             return {"error": str(e)}
 
-    # ──────────────────────────────
+    # ------------------------------
     # READ FILES
-    # ──────────────────────────────
+    # ------------------------------
 
     def get_file_info(self, file_id: str) -> dict:
         """Get file metadata."""
@@ -271,9 +271,9 @@ class DriveClient:
         except Exception as e:
             return {"error": str(e)}
 
-    # ──────────────────────────────
+    # ------------------------------
     # HELPER METHODS
-    # ──────────────────────────────
+    # ------------------------------
 
     def _format_file(self, f: dict) -> dict:
         """Format file for output."""

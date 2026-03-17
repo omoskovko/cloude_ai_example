@@ -5,9 +5,11 @@ MCP server for reading and searching files on Google Drive via a personal accoun
 ## Project Structure
 
 ```
-gdrive-mcp-server/
+cloude_ai_example/
 ├── server.py                          # MCP server, entry point
 ├── drive_client.py                    # Google Drive API client
+├── auth.py                            # Standalone script to generate token.json
+├── client.py                          # Example client sending requests to the server
 ├── requirements.txt
 ├── .env.example                       # Environment variables template
 ├── credentials.json                   # ← Download from Google Cloud Console
@@ -22,7 +24,7 @@ gdrive-mcp-server/
 ### Step 1 — Install Dependencies
 
 ```bash
-cd gdrive-mcp-server
+cd cloude_ai_example
 pip install -r requirements.txt
 ```
 
@@ -70,7 +72,25 @@ This needs to be done **once** to obtain `credentials.json`.
 
 ---
 
-### Step 6 — First Authorization
+### Step 6 — Generate a Claude API Key
+
+1. Open [Claude Console](https://console.anthropic.com/)
+2. Sign in or create an Anthropic account
+3. In the left sidebar, go to **API Keys**
+4. Click **Create Key**
+5. Give the key a name (e.g., `mcp-drive-client`) → click **Create Key**
+6. Copy the generated key immediately — it will not be shown again
+7. Add the key to your `.env` file:
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+> ⚠️ Never commit your API key to git. Make sure `.env` is listed in `.gitignore`.
+
+---
+
+### Step 7 — First Authorization
 
 ```bash
 cp .env.example .env
@@ -83,19 +103,25 @@ Sign in to your Google account → click **Allow**.
 A `token.json` file will be created — this is your access token.
 Future runs won't require the browser.
 
+#### Troubleshooting: browser doesn't open or authorization fails
+
+If the browser doesn't open or you get an authentication error, run `auth.py` directly to generate `token.json`:
+
+```bash
+python auth.py
+```
+
+A browser window will open — sign in to your Google account and click **Allow**.
+Once complete, `token.json` will be created in the project folder.
+
 ---
 
-### Step 7 — Connect to Claude Desktop
+## Usage
+1. Start the client:
 
-Find or create the config file:
-
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-Copy content from `claude_desktop_config.example.json` — replace paths with yours.
-Restart Claude Desktop.
-
----
+```bash
+python client.py ./server.py
+```
 
 ## Available Tools
 
